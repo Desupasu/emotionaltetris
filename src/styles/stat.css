@@ -1,0 +1,85 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+header {
+    width: 260px;
+    height: 120px;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px 2px;
+    margin: 30px auto 60px;
+}
+
+header > div {
+    background-color: rgb(135,174,85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+header > div:nth-child(4), header > div:nth-child(5) {
+    background-color: inherit;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: rgb(233,234,225);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, rgb(233,234,225) 5%, rgb(146,197,178),rgb(233,234,225) 95%);
+    width: 70%;
+    margin: 0 auto;
+    height: 70vh;
+}
+
+main > a {
+    font-size: 54px;
+    letter-spacing: 0.3em;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
+    transition: all .3s;
+}
+
+main > a:focus {
+    color:rgb(104,155,37);
+    letter-spacing: 0.4em;
+    outline: none;
+}
+
+a:visited, a:active, a:link {
+    text-decoration: inherit;
+    color: initial;
+}
+
+#scores {
+    font-size: 35px;
+    font-weight: bold;
+    height: 50vh;
+    max-height: 50vh;
+    overflow: auto;
+    margin-right: 70px;
+    margin-left: 70px;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+#scores > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    letter-spacing: 0.2em;
+}
