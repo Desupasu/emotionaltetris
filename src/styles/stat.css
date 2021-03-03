@@ -2,6 +2,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    font-family: Montserrat;
 }
 
 header {
@@ -66,8 +67,8 @@ a:visited, a:active, a:link {
 #scores {
     font-size: 35px;
     font-weight: bold;
-    height: 50vh;
-    max-height: 50vh;
+    height: 40vh;
+    max-height: 40vh;
     overflow: auto;
     margin-right: 70px;
     margin-left: 70px;
