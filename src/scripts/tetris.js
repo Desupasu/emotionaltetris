@@ -525,18 +525,6 @@ window.onload = () => {
         tetromino.row = row;
       }
 
-      if(e.code === 'Escape') {
-        const a = document.createElement('a');
-        a.href = 'main.html';
-        a.click();
-      }
-
-      if(e.code === 'KeyR') {
-        const a = document.createElement('a');
-        a.href = 'tetris.html';
-        a.click();
-      }
-
       if(e.code === 'KeyP') {
         if (!pause) {
           showPause();
@@ -548,4 +536,18 @@ window.onload = () => {
 
     // старт игры
     rAF = requestAnimationFrame(loop);
+
+    document.addEventListener('keydown', function(e) {
+      if(e.code === 'Escape') {
+        const a = document.createElement('a');
+        a.href = 'main.html';
+        a.click();
+      }
+
+      if(e.code === 'KeyR') {
+        const a = document.createElement('a');
+        a.href = 'tetris.html';
+        a.click();
+      }
+    })
 }

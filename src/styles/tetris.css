@@ -61,9 +61,9 @@ canvas#game {
     padding: 30px;
     width: 30px;
     cursor: pointer;
-    background: url('../icons/home.svg') center/70% no-repeat;
+    background: url('/icons/home.svg') center/70% no-repeat;
 }
 
 #actions > a:first-child {
-    background: url('../icons/reload.svg') center/70% no-repeat;
+    background: url('/icons/reload.svg') center/70% no-repeat;
 }
