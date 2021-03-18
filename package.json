@@ -1,0 +1,25 @@
+{
+  "name": "emotionaltetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "build": {
+    "appId": "emotionaltetris",
+    "mac": {
+      "category": "emotionaltetris"
+    }
+  },
+  "devDependencies": {
+    "electron": "^12.0.0",
+    "electron-builder": "^22.10.5"
+  },
+  "scripts": {
+    "start": "electron .",
+    "win": "electron-builder --win portable",
+    "linux": "electron-builder --linux AppImage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

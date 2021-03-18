@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emotional tetris</title>
+  <link rel='stylesheet' href='../styles/all.css'>
+  <link rel='stylesheet' href='../styles/tetris.css'>
+  <script src='../scripts/config.js'></script>
+  <script src='../scripts/tetris.js'></script>
+</head>
+<body>
+  <div id='emotion'>
+    Emotion: 
+  </div>
+  <main id='main'>
+    <!-- рисуем поле для игры -->
+    <div class='next__container'>
+      <div>
+        Next:
+      </div>
+      <canvas style="border: 0px" width="150" height="70" id="next"></canvas>
+    </div>
+    <canvas width="320" height="640" id="game"></canvas>
+  </main>
+  <div id='actions'>
+    <a href='tetris.html'></a>
+    <a href='main.html'></a>
+  </div>
+  <div class='score__container'>
+    <div id='bestscore'>
+      Best score:<br />0
+    </div>
+    <div id='score'>
+      Score:<br />0
+    </div>
+    <div id='lines'>
+      Lines:<br />0
+    </div>
+    <div id='level'>
+      Speed:<br />1
+    </div>
+  </div>
+</body>
+</html>
