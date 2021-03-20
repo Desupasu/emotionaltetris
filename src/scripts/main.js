@@ -5,6 +5,11 @@ window.onload = () => {
         item.addEventListener('mouseover', (e) => {
             e.target?.focus();
         })
+        item.addEventListener('click', e => {
+            if (e.target.textContent.trim() === 'MENU') {
+                e.preventDefault();
+            }
+        })
     })
 
     window.addEventListener('keydown', e => {

@@ -6,6 +6,8 @@ function createWindow () {
     icon: path.join(__dirname, 'src/icons/icon.png'),
     width: 1000,
     height: 800,
+    minHeight: 800,
+    minWidth: 1000,
     webPreferences: {
         preload: path.join(__dirname, 'src/scripts/preload.js'),
         enableRemoteModule: true,

@@ -6,13 +6,22 @@ window.onload = () => {
     const tetrisHeight = configuration.TETRISHEIGHT;
     // получаем доступ к холсту
     const canvas = document.getElementById('game');
-    const grid = configuration.GRIDSIZE;
-    canvas.height = tetrisHeight * grid;
-    canvas.width = grid * 10;
+    let grid = configuration.GRIDSIZE;
     const context = canvas.getContext('2d');
 
     const nextCanvas = document.getElementById('next');
     const ctx = nextCanvas.getContext('2d');
+
+    function resizeCanvas() {
+      grid = Math.floor((window.innerHeight - 120) / configuration.TETRISHEIGHT);
+      canvas.height = tetrisHeight * grid;
+      canvas.width = grid * 10;
+
+      nextCanvas.height = grid * 2;
+      nextCanvas.width = grid * 4;
+    }
+
+    resizeCanvas();
     // размер квадратика
     // массив с последовательностями фигур, на старте — пустой
     var tetrominoSequence = [];
@@ -168,23 +177,23 @@ window.onload = () => {
     }
     // Обновляем справочную информацию
     function updateText(type) {
-     // if (type === 'emotion') {
+
         const doc1 = document.getElementById('emotion');
         const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
         if (emotion) {
           const emotionIndex = sequence.indexOf(emotion);
           doc1.innerHTML = '<div>Emotion:<br /><img src="../icons/' + (emotionIndex + 1) + '.png"><div>';
         }
-     // } else if (type === 'score') {
+
         const doc2 = document.getElementById('score');
         doc2.innerHTML = 'Score:<br />' + score;
-     // } else if (type === 'level') {
+
         const doc3 = document.getElementById('level');
         doc3.innerHTML = 'Level:<br />' + level;
-     // } else if (type === 'lines') {
+
         const doc4 = document.getElementById('lines');
         doc4.innerHTML = 'Lines:<br />' + totalRows;
-     // }
+
         let scores = localStorage.getItem('scores');
         if (scores) {
           scores = JSON.parse(scores);
@@ -202,6 +211,20 @@ window.onload = () => {
       const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
       const rand = getRandomInt(0, sequence.length - 1);
       return sequence[rand];
+    }
+
+    function drawNextTetromino() {
+      // Рисуем следующую фигуру
+      ctx.clearRect(0,0, nextCanvas.width, nextCanvas.height);
+      if (tetrominoSequence && tetrominoSequence.length > 0 && tetrominoSequence[tetrominoSequence.length-1]) {
+        ctx.fillStyle = colors[tetrominoSequence[tetrominoSequence.length-1]];
+        let tetr = tetrominos[tetrominoSequence[tetrominoSequence.length-1]];
+        for (let row = 0; row < 4; row++) {
+          for (let col = 0; col < 4; col++) {
+            if (tetr[row] && tetr[row][col]) ctx.fillRect(col * grid, row * grid, grid-1, grid-1);
+          }
+        }
+      }
     }
 
     // получаем следующую фигуру
@@ -240,17 +263,7 @@ window.onload = () => {
         generateSequence(group, needUpdate);
         updateText('emotion');
 
-              // Рисуем следующую фигуру
-        ctx.clearRect(0,0, nextCanvas.width, nextCanvas.height);
-        if (tetrominoSequence && tetrominoSequence.length > 0 && tetrominoSequence[tetrominoSequence.length-1]) {
-          ctx.fillStyle = colors[tetrominoSequence[tetrominoSequence.length-1]];
-          const tetr = tetrominos[tetrominoSequence[tetrominoSequence.length-1]];
-          for (let row = 0; row < 4; row++) {
-            for (let col = 0; col < 4; col++) {
-              if (tetr[row] && tetr[row][col]) ctx.fillRect(col * grid, row * grid, grid-1, grid-1);
-            }
-          }
-        }
+        drawNextTetromino();
       }
 
       // сразу создаём матрицу, с которой мы отрисуем фигуру
@@ -425,14 +438,9 @@ window.onload = () => {
         context.fillText('PAUSE!', canvas.width / 2, canvas.height / 2);
       }
 
-    // главный цикл игры
-    function loop() {
-      // начинаем анимацию
-
-      rAF = requestAnimationFrame(loop);
+    function drawField() {
       // очищаем холст
       context.clearRect(0,0,canvas.width,canvas.height);
-
       // рисуем игровое поле с учётом заполненных фигур
       for (let row = 0; row < tetrisHeight; row++) {
         for (let col = 0; col < 10; col++) {
@@ -475,6 +483,12 @@ window.onload = () => {
           }
         }
       }
+    }
+    // главный цикл игры
+    function loop() {
+      // начинаем анимацию
+      rAF = requestAnimationFrame(loop);
+      drawField();
     }
 
     function continueGame() {
@@ -549,5 +563,11 @@ window.onload = () => {
         a.href = 'tetris.html';
         a.click();
       }
+    })
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      drawNextTetromino();
+      drawField();
     })
 }
