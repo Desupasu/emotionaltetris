@@ -12,6 +12,7 @@ window.onload = () => {
     const nextCanvas = document.getElementById('next');
     const ctx = nextCanvas.getContext('2d');
 
+    // Функция изменения размера санваса при ресайзе окна
     function resizeCanvas() {
       grid = Math.floor((window.innerHeight - 120) / configuration.TETRISHEIGHT);
       canvas.height = tetrisHeight * grid;
@@ -20,7 +21,7 @@ window.onload = () => {
       nextCanvas.height = grid * 2;
       nextCanvas.width = grid * 4;
     }
-
+    // Инициализирующий ресайз
     resizeCanvas();
     // размер квадратика
     // массив с последовательностями фигур, на старте — пустой
@@ -89,7 +90,7 @@ window.onload = () => {
       'J': 'blue',
       'L': 'orange'
     };
-
+    // Количество выпавших фигур для обновления эмоции
     const tetraminoForUpdate = configuration.COUNTTOCHANGE;
     // Количество выпавших фигур для смены эмоции
     let countOfTetramino = 0;
@@ -111,7 +112,7 @@ window.onload = () => {
     let needNewRule = false;
     // Запуск счетчика, когда пройдет время
     let allowCount = false;
-
+    // Запуск времени ожидания, для игры по новым правилам
     setTimeout(() => {
       needNewRule = true;
       allowCount = true;
@@ -138,6 +139,13 @@ window.onload = () => {
 
     // создаём последовательность фигур, которая появится в игре
     //https://tetris.fandom.com/wiki/Random_Generator
+
+    /**
+      * Генерация последовательности тетромино
+      * 
+      * @param {string} gr group of emotions
+      * @param {boolean} nu need to update level
+      */
     function generateSequence(gr, nu) {
       // тут — сами фигуры
       if (nu) {
@@ -161,7 +169,12 @@ window.onload = () => {
     //}
 
     }
-    // Получить группу
+    /**
+      * Получение группы эмоций по эмоции
+      * 
+      * @param {string} em emotion
+      * @returns {string}
+      */
     function getGroup(em) {
       switch(em || emotion) {
         case 'H':
@@ -176,24 +189,24 @@ window.onload = () => {
       }
     }
     // Обновляем справочную информацию
-    function updateText(type) {
-
+    function updateText() {
+      // Обновление эмоции
         const doc1 = document.getElementById('emotion');
         const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
         if (emotion) {
           const emotionIndex = sequence.indexOf(emotion);
           doc1.innerHTML = '<div>Emotion:<br /><img src="../icons/' + (emotionIndex + 1) + '.png"><div>';
         }
-
+        // Обновление скора
         const doc2 = document.getElementById('score');
         doc2.innerHTML = 'Score:<br />' + score;
-
+        // Обновление левела
         const doc3 = document.getElementById('level');
         doc3.innerHTML = 'Level:<br />' + level;
-
+        // Обновление количества строк
         const doc4 = document.getElementById('lines');
         doc4.innerHTML = 'Lines:<br />' + totalRows;
-
+        // обновление бест скора
         let scores = localStorage.getItem('scores');
         if (scores) {
           scores = JSON.parse(scores);
@@ -205,7 +218,7 @@ window.onload = () => {
         doc5.innerHTML = 'Best score:<br />' + Math.max(bestscore, score);
     }
 
-    updateText('emotion');
+    updateText();
 
     function getEmotion() {
       const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
@@ -242,7 +255,7 @@ window.onload = () => {
           needUpdate = lastGroup === group;
         }
         generateSequence(group, needUpdate);
-        updateText('emotion');
+        updateText();
       }
 
       // берём первую фигуру из массива
@@ -261,7 +274,7 @@ window.onload = () => {
           needNewRule = false;
         }
         generateSequence(group, needUpdate);
-        updateText('emotion');
+        updateText();
 
         drawNextTetromino();
       }
@@ -369,7 +382,7 @@ window.onload = () => {
           level++;
           rowCountForUpdate = rowCountForUpdate - 10;
         }
-      updateText('level');
+      updateText();
       // получаем следующую фигуру
       tetromino = getNextTetromino();
     }
@@ -538,7 +551,7 @@ window.onload = () => {
         // запоминаем строку, куда стала фигура
         tetromino.row = row;
       }
-
+      // Показ паузы
       if(e.code === 'KeyP') {
         if (!pause) {
           showPause();
@@ -552,19 +565,20 @@ window.onload = () => {
     rAF = requestAnimationFrame(loop);
 
     document.addEventListener('keydown', function(e) {
+      // Выход из игры в главное меню
       if(e.code === 'Escape') {
         const a = document.createElement('a');
         a.href = 'main.html';
         a.click();
       }
-
+      // Перезагрузка игры
       if(e.code === 'KeyR') {
         const a = document.createElement('a');
         a.href = 'tetris.html';
         a.click();
       }
     })
-
+    // Отслеживание ресайза окна
     window.addEventListener('resize', () => {
       resizeCanvas();
       drawNextTetromino();
