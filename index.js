@@ -3,15 +3,15 @@ const path = require('path');
 
 function createWindow () {
   let win = new BrowserWindow({
-    icon: path.join(__dirname, 'src/icons/icon.png'),
     width: 1000,
     height: 800,
     minHeight: 800,
     minWidth: 1000,
     webPreferences: {
-        preload: path.join(__dirname, 'src/scripts/preload.js'),
+        preload: path.join(__dirname, 'src/minscripts/preload.js'),
         enableRemoteModule: true,
-    }
+    },
+    icon: path.join(__dirname, 'src/icon.png')
   })
 
   win.loadFile('src/pages/main.html');

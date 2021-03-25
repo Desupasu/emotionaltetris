@@ -3,7 +3,9 @@ window.onload = () => {
     linkList[0].focus();
     Array.from(linkList).forEach(item => {
         item.addEventListener('mouseover', (e) => {
-            e.target?.focus();
+            if (e.target) {
+                e.target.focus();
+            }
         })
         item.addEventListener('click', e => {
             if (e.target.textContent.trim() === 'RATING') {
