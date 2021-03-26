@@ -262,10 +262,10 @@ window.onload = () => {
       const name = tetrominoSequence.pop();
 
       if (tetrominoSequence.length === 0) {
-        if (allowCount) countOfTetramino++;
+        if (allowCount && !!totalRows) countOfTetramino++;
         let needUpdate = false;
 
-        if (countOfTetramino >= tetraminoForUpdate || needNewRule) {
+        if (countOfTetramino >= tetraminoForUpdate || (needNewRule && !!totalRows)) {
           const lastGroup = group;
           emotion = getEmotion();
           group = getGroup();
@@ -360,14 +360,16 @@ window.onload = () => {
               playfield[r][c] = playfield[r-1][c];
             }
           }
-          rowCountForUpdate += countOfRows;
-          totalRows += countOfRows;
         }
         else {
           // переходим к следующему ряду
           row--;
         }
       }
+
+      rowCountForUpdate += countOfRows;
+      totalRows += countOfRows;
+      console.log(countOfRows)
 
       if (countOfRows === 1) {
           score += 100;
