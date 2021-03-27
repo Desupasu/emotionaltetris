@@ -10,6 +10,7 @@
     "electron": "^12.0.0",
     "electron-builder": "^22.10.5",
     "electron-compile": "^6.4.4",
+    "fs": "0.0.1-security",
     "path": "^0.12.7",
     "uglify-js": "^3.13.2",
     "uglifycss": "0.0.29"
@@ -18,7 +19,7 @@
     "start": "npm run min && electron .",
     "win": "npm run min && electron-builder --win portable",
     "linux": "npm run min && electron-builder --linux AppImage",
-    "min": "bash minify.bash"
+    "min": "node minify.js || bash minify.bash"
   },
   "keywords": [],
   "author": "romatel <zaxarovroma228@gmail.com>",
