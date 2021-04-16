@@ -18,17 +18,21 @@ window.onload = () => {
 
     if (stat) {
         const section = document.getElementById('scores');
-        stat = JSON.parse(stat);
-        for (key in stat) {
+        stat = Object.entries(JSON.parse(stat)).sort((a,b) => a[1] - b[1]);
+        const maxScore = Math.max(...stat.map(item => +item[0]))
+        for (const [key, value] of stat) {
             const divElem = document.createElement('div');
             const dateElem = document.createElement('div');
-            const dateText = document.createTextNode(new Date(stat[key]).toLocaleDateString('ru-RU'));
+            const dateText = document.createTextNode(new Date(value).toLocaleDateString('ru-RU'));
+            const crown = document.createElement('div');
+            crown.id = 'crown';
             dateElem.appendChild(dateText);
             const scoreElem = document.createElement('div');
             const scoreText = document.createTextNode(key);
             scoreElem.appendChild(scoreText);
             divElem.appendChild(dateElem);
             divElem.appendChild(scoreElem);
+            divElem.appendChild(crown);
             section.appendChild(divElem);
         }
     }

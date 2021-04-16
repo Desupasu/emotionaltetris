@@ -82,12 +82,12 @@ window.onload = () => {
 
     // цвет каждой фигуры
     const colors = {
-      'I': 'cyan',
+      'I': 'red',
       'O': 'yellow',
       'T': 'purple',
       'S': 'green',
       'Z': 'red',
-      'J': 'blue',
+      'J': 'purple',
       'L': 'orange'
     };
     // Количество выпавших фигур для обновления эмоции
@@ -336,9 +336,9 @@ window.onload = () => {
       for (let row = 0; row < tetromino.matrix.length; row++) {
         for (let col = 0; col < tetromino.matrix[row].length; col++) {
           if (tetromino.matrix[row][col]) {
-
+            console.log(tetromino, row, tetromino.row + row)
             // если край фигуры после установки вылезает за границы поля, то игра закончилась
-            if (tetromino.row + row < 0) {
+            if (tetromino.row + row <= 0) {
               return showGameOver();
             }
             // если всё в порядке, то записываем в массив игрового поля нашу фигуру
@@ -369,7 +369,6 @@ window.onload = () => {
 
       rowCountForUpdate += countOfRows;
       totalRows += countOfRows;
-      console.log(countOfRows)
 
       if (countOfRows === 1) {
           score += 100;
@@ -395,31 +394,30 @@ window.onload = () => {
         cancelAnimationFrame(rAF);
         // ставим флаг окончания
         gameOver = true;
-        
-        if (score) {
-          let scores = localStorage.getItem('scores');
-          if (scores) {
-            scores = JSON.parse(scores);
-          } else {
-            scores = {};
-          }
 
-          if (!scores || Object.keys(scores).every(item => Number(item) < score)) {
-            context.fillStyle = 'black';
-            context.globalAlpha = 0.75;
-            context.fillRect(0, canvas.height / 2 - 60, canvas.width, 120);
-            // пишем надпись белым моноширинным шрифтом по центру
-            context.globalAlpha = 1;
-            context.fillStyle = 'white';
-            context.font = '36px monospace';
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            context.fillText('GAME OVER!', canvas.width / 2, (canvas.height / 2) + 25);
-            context.fillText('BEST SCORE!', canvas.width / 2, (canvas.height / 2) - 25);
-          }
+        let scores = localStorage.getItem('scores');
+        if (scores) {
+          scores = JSON.parse(scores);
+        } else {
+          scores = {};
+        }
+
+        if (score) {
           scores[score.toString()] = (new Date()).valueOf();
           localStorage.setItem('scores', JSON.stringify(scores));
-
+        }
+        if (score && (!scores || Object.keys(scores).every(item => Number(item) < score))) {
+          context.fillStyle = 'black';
+          context.globalAlpha = 0.75;
+          context.fillRect(0, canvas.height / 2 - 60, canvas.width, 120);
+          // пишем надпись белым моноширинным шрифтом по центру
+          context.globalAlpha = 1;
+          context.fillStyle = 'white';
+          context.font = '36px monospace';
+          context.textAlign = 'center';
+          context.textBaseline = 'middle';
+          context.fillText('GAME OVER!', canvas.width / 2, (canvas.height / 2) + 25);
+          context.fillText('BEST SCORE!', canvas.width / 2, (canvas.height / 2) - 25);
         } else {
           // рисуем чёрный прямоугольник посередине поля
           context.fillStyle = 'black';
