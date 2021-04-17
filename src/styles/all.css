@@ -1,14 +1,12 @@
 @font-face {
     font-family: Montserrat;
-    src: url("../fonts/Montserrat-Light.ttf") format("truetype"),
-         url("../fonts/Montserrat-Light.woff") format("woff");
+    src: url("../fonts/Montserrat-Light.woff") format("woff");
     font-weight: normal;
 }
 
 @font-face {
     font-family: Montserrat;
-    src: url("../fonts/Montserrat-Bold.ttf") format("truetype"),
-         url("../fonts/Montserrat-Bold.woff") format("woff");
+    src: url("../fonts/Montserrat-Bold.woff") format("woff");
     font-weight: bold;
 }
 
@@ -34,7 +32,7 @@ body.menu main {
     display: flex;
     flex-direction: column;
     background: linear-gradient(to right, var(--bg) 5%, var(--bg-menu),var(--bg) 95%);
-    width: 70%;
+    min-width: 70%;
     margin: 0 auto;
     height: 70vh;
 }

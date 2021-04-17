@@ -3,6 +3,37 @@
     // https://tetris.fandom.com/wiki/Tetris_Guideline
 
 window.onload = () => {
+    const gameOverText = {
+      exit: {
+        main: 'Do you really want to go to the menu?',
+        sub: 'Your current points are not saved'
+      },
+      restart: {
+        main: 'Do you really want to start over?',
+        sub: 'Your current points are not saved'
+      },
+      gameover: {
+        main: 'GAME OVER',
+        sub: 'Want to start over?'
+      },
+      bestgameover: {
+        main: 'GAME OVER. BEST SCORE!',
+        sub: 'Want to start over?'
+      },
+    }
+
+    const exit = () => {
+      const a = document.createElement('a');
+      a.href = 'main.html';
+      a.click();
+    }
+
+    const restart = () => {
+      const a = document.createElement('a');
+      a.href = 'tetris.html';
+      a.click();
+    }
+
     const tetrisHeight = configuration.TETRISHEIGHT;
     // получаем доступ к холсту
     const canvas = document.getElementById('game');
@@ -12,14 +43,55 @@ window.onload = () => {
     const nextCanvas = document.getElementById('next');
     const ctx = nextCanvas.getContext('2d');
 
+    function showPopup(type) {
+      showPause();
+      const section = document.querySelector('.gameover');
+      const actions = document.querySelector('.gameover__actions');
+      section.children[0].textContent = gameOverText[type].main;
+      section.children[1].textContent = gameOverText[type].sub;
+
+      if (type === 'exit') {
+        actions.children[0].onclick = exit;
+        actions.children[1].onclick = continueGame;
+      }
+      if (type === 'restart') {
+        actions.children[0].onclick = restart;
+        actions.children[1].onclick = continueGame;
+      }
+      if (type === 'gameover' || type === 'bestgameover') {
+        actions.children[0].onclick = restart;
+        actions.children[1].onclick = exit;
+        section.classList.add('bold');
+      }
+      actions.children[0].addEventListener('click', () => {
+        section.classList.remove('show');
+        section.classList.remove('bold');
+      });
+      actions.children[1].addEventListener('click', () => {
+        section.classList.remove('show');
+        section.classList.remove('bold');
+      });
+      section.classList.add('show');
+    }
+
+    const tertisActions = document.getElementById('actions');
+    tertisActions.children[0].onclick = e => {
+      showPopup('restart');
+    };
+    tertisActions.children[1].onclick = e => {
+      showPopup('exit');
+    };
     // Функция изменения размера санваса при ресайзе окна
     function resizeCanvas() {
-      grid = Math.floor((window.innerHeight - 120) / configuration.TETRISHEIGHT);
+      grid = Math.floor((window.innerHeight - 130) / configuration.TETRISHEIGHT);
       canvas.height = tetrisHeight * grid;
       canvas.width = grid * 10;
 
       nextCanvas.height = grid * 2;
       nextCanvas.width = grid * 4;
+
+      const section = document.querySelector('.gameover');
+      section.style.width = grid * 10 + 150 + 'px';
     }
     // Инициализирующий ресайз
     resizeCanvas();
@@ -82,16 +154,18 @@ window.onload = () => {
 
     // цвет каждой фигуры
     const colors = {
-      'I': 'red',
-      'O': 'yellow',
-      'T': 'purple',
-      'S': 'green',
-      'Z': 'red',
-      'J': 'purple',
-      'L': 'orange'
+      'I': '#e20e0e',
+      'O': '#e28166',
+      'T': '#4b57f2',
+      'S': '#069c93',
+      'Z': '#5a9c06',
+      'J': '#a90ee2',
+      'L': '#e2810e'
     };
     // Количество выпавших фигур для обновления эмоции
     const tetraminoForUpdate = configuration.COUNTTOCHANGE;
+    // Ошибка переполнения
+    let isError = false;
     // Количество выпавших фигур для смены эмоции
     let countOfTetramino = 0;
     // Количество строк для расчета уровня
@@ -169,6 +243,7 @@ window.onload = () => {
     //}
 
     }
+
     /**
       * Получение группы эмоций по эмоции
       * 
@@ -192,10 +267,22 @@ window.onload = () => {
     function updateText() {
       // Обновление эмоции
         const doc1 = document.getElementById('emotion');
-        const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
+        // const sequence = ['H', 'U', 'N', 'G', 'A', 'D', 'S'];
+        // if (emotion) {
+        //   const emotionIndex = sequence.indexOf(emotion);
+        //   doc1.innerHTML = '<div>Emotion:<br /><img src="../icons/' + (emotionIndex + 1) + '.png"><div>';
+        // }
+        const emotionSequence = {
+          H: 'Happy',
+          U: 'Wonder',
+          N: 'OK',
+          G: 'Sad',
+          A: 'Angry',
+          D: 'Disgust',
+          S: 'Scared'
+        };
         if (emotion) {
-          const emotionIndex = sequence.indexOf(emotion);
-          doc1.innerHTML = '<div>Emotion:<br /><img src="../icons/' + (emotionIndex + 1) + '.png"><div>';
+          doc1.innerHTML = `<div>Emotion:<br />${emotionSequence[emotion]}<div>`;
         }
         // Обновление скора
         const doc2 = document.getElementById('score');
@@ -336,7 +423,6 @@ window.onload = () => {
       for (let row = 0; row < tetromino.matrix.length; row++) {
         for (let col = 0; col < tetromino.matrix[row].length; col++) {
           if (tetromino.matrix[row][col]) {
-            console.log(tetromino, row, tetromino.row + row)
             // если край фигуры после установки вылезает за границы поля, то игра закончилась
             if (tetromino.row + row <= 0) {
               return showGameOver();
@@ -370,19 +456,34 @@ window.onload = () => {
       rowCountForUpdate += countOfRows;
       totalRows += countOfRows;
 
+      if (score + 100 >= Number.MAX_SAFE_INTEGER) {
+        let scores = localStorage.getItem('scores');
+        if (scores) {
+          scores = JSON.parse(scores);
+        } else {
+          scores = {};
+        }
+
+        if (score) {
+          scores[Number.MAX_SAFE_INTEGER] = (new Date()).valueOf();
+          localStorage.setItem('scores', JSON.stringify(scores));
+        }
+        showError();
+      }
+
       if (countOfRows === 1) {
-          score += 100;
-        } else if (countOfRows === 2) {
-          score += 300;
-        } else if (countOfRows === 3) {
-          score += 700;
-        } else if (countOfRows === 4) {
-          score += 1000;
-        }
-        if (rowCountForUpdate >= 10) {
-          level++;
-          rowCountForUpdate = rowCountForUpdate - 10;
-        }
+        score += 100;
+      } else if (countOfRows === 2) {
+        score += 300;
+      } else if (countOfRows === 3) {
+        score += 700;
+      } else if (countOfRows === 4) {
+        score += 1000;
+      }
+      if (rowCountForUpdate >= 10) {
+        level++;
+        rowCountForUpdate = rowCountForUpdate - 10;
+      }
       updateText();
       // получаем следующую фигуру
       tetromino = getNextTetromino();
@@ -407,29 +508,31 @@ window.onload = () => {
           localStorage.setItem('scores', JSON.stringify(scores));
         }
         if (score && (!scores || Object.keys(scores).every(item => Number(item) < score))) {
-          context.fillStyle = 'black';
-          context.globalAlpha = 0.75;
-          context.fillRect(0, canvas.height / 2 - 60, canvas.width, 120);
-          // пишем надпись белым моноширинным шрифтом по центру
-          context.globalAlpha = 1;
-          context.fillStyle = 'white';
-          context.font = '36px monospace';
-          context.textAlign = 'center';
-          context.textBaseline = 'middle';
-          context.fillText('GAME OVER!', canvas.width / 2, (canvas.height / 2) + 25);
-          context.fillText('BEST SCORE!', canvas.width / 2, (canvas.height / 2) - 25);
+          // context.fillStyle = 'black';
+          // context.globalAlpha = 0.75;
+          // context.fillRect(0, canvas.height / 2 - 60, canvas.width, 120);
+          // // пишем надпись белым моноширинным шрифтом по центру
+          // context.globalAlpha = 1;
+          // context.fillStyle = 'white';
+          // context.font = '36px monospace';
+          // context.textAlign = 'center';
+          // context.textBaseline = 'middle';
+          // context.fillText('GAME OVER!', canvas.width / 2, (canvas.height / 2) + 25);
+          // context.fillText('BEST SCORE!', canvas.width / 2, (canvas.height / 2) - 25);
+          showPopup('bestgameover');
         } else {
           // рисуем чёрный прямоугольник посередине поля
-          context.fillStyle = 'black';
-          context.globalAlpha = 0.75;
-          context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-          // пишем надпись белым моноширинным шрифтом по центру
-          context.globalAlpha = 1;
-          context.fillStyle = 'white';
-          context.font = '36px monospace';
-          context.textAlign = 'center';
-          context.textBaseline = 'middle';
-          context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
+          // context.fillStyle = 'black';
+          // context.globalAlpha = 0.75;
+          // context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+          // // пишем надпись белым моноширинным шрифтом по центру
+          // context.globalAlpha = 1;
+          // context.fillStyle = 'white';
+          // context.font = '36px monospace';
+          // context.textAlign = 'center';
+          // context.textBaseline = 'middle';
+          // context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
+          showPopup('gameover');
         }
       }
       // пауза
@@ -439,17 +542,33 @@ window.onload = () => {
         cancelAnimationFrame(rAF);
         // ставим флаг окончания
         // рисуем чёрный прямоугольник посередине поля
-        context.fillStyle = 'black';
-        context.globalAlpha = 0.75;
-        context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-        // пишем надпись белым моноширинным шрифтом по центру
-        context.globalAlpha = 1;
-        context.fillStyle = 'white';
-        context.font = '36px monospace';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillText('PAUSE!', canvas.width / 2, canvas.height / 2);
+        // context.fillStyle = 'black';
+        // context.globalAlpha = 0.75;
+        // context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+        // // пишем надпись белым моноширинным шрифтом по центру
+        // context.globalAlpha = 1;
+        // context.fillStyle = 'white';
+        // context.font = '36px monospace';
+        // context.textAlign = 'center';
+        // context.textBaseline = 'middle';
+        // context.fillText('PAUSE!', canvas.width / 2, canvas.height / 2);
       }
+
+    function showError() {
+      cancelAnimationFrame(rAF);
+      const body = document.querySelector('body');
+      body.style.display = 'flex';
+      body.style.alignItems = 'center';
+      Array.from(body.children).map(item => {
+        body.removeChild(item);
+      });
+      const div = document.createElement('div');
+      body.appendChild(div);
+      div.innerHTML = `<b>OOPS!</b><br />ERROR! GAMER DETECTED!<br />STOP PLAYING AND DO YOUR HOMEWORK!<br />(MAX SCORE REACHED)<br /><button id="error">OK</button>`;
+      div.style.textAlign = 'center';
+      div.style.fontSize = '25px';
+      div.onclick = exit;
+    }
 
     function drawField() {
       // очищаем холст
@@ -551,14 +670,14 @@ window.onload = () => {
         // запоминаем строку, куда стала фигура
         tetromino.row = row;
       }
-      // Показ паузы
-      if(e.code === 'KeyP') {
-        if (!pause) {
-          showPause();
-        } else {
-          continueGame();
-        }
-      }
+      // // Показ паузы
+      // if(e.code === 'KeyP') {
+      //   if (!pause) {
+      //     showPause();
+      //   } else {
+      //     continueGame();
+      //   }
+      // }
     });
 
     // старт игры
@@ -567,15 +686,11 @@ window.onload = () => {
     document.addEventListener('keydown', function(e) {
       // Выход из игры в главное меню
       if(e.code === 'Escape') {
-        const a = document.createElement('a');
-        a.href = 'main.html';
-        a.click();
+        showPopup('exit');
       }
       // Перезагрузка игры
       if(e.code === 'KeyR') {
-        const a = document.createElement('a');
-        a.href = 'tetris.html';
-        a.click();
+        showPopup('restart');
       }
     })
     // Отслеживание ресайза окна

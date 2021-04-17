@@ -24,15 +24,18 @@ window.onload = () => {
             const divElem = document.createElement('div');
             const dateElem = document.createElement('div');
             const dateText = document.createTextNode(new Date(value).toLocaleDateString('ru-RU'));
-            const crown = document.createElement('div');
-            crown.id = 'crown';
-            dateElem.appendChild(dateText);
             const scoreElem = document.createElement('div');
             const scoreText = document.createTextNode(key);
+            dateElem.appendChild(dateText);
             scoreElem.appendChild(scoreText);
+            scoreElem.style.marginLeft = '20px';
             divElem.appendChild(dateElem);
             divElem.appendChild(scoreElem);
-            divElem.appendChild(crown);
+            if (maxScore == key) {
+                const crown = document.createElement('div');
+                crown.id = 'crown';
+                divElem.appendChild(crown);
+            }
             section.appendChild(divElem);
         }
     }
