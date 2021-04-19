@@ -7,6 +7,8 @@ function createWindow () {
     height: 800,
     minHeight: 800,
     minWidth: 1000,
+    maxWidth: 1000,
+    maxHeight: 800,
     webPreferences: {
         preload: path.join(__dirname, 'src/minscripts/preload.min.js'),
         enableRemoteModule: true,

@@ -34,7 +34,7 @@ body.menu main {
     background: linear-gradient(to right, var(--bg) 5%, var(--bg-menu),var(--bg) 95%);
     min-width: 70%;
     margin: 0 auto;
-    height: 70vh;
+    height: 400px;
 }
 
 body.menu main > a {
@@ -44,7 +44,7 @@ body.menu main > a {
     padding: 15px 0;
     font-weight: bold;
     transition: all .2s;
-    height: 60px;
+    height: 65px;
 }
 
 body.menu main > a:focus {
@@ -78,7 +78,7 @@ header {
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(4, 1fr);
     gap: 4px 2px;
-    margin: 30px auto 60px;
+    margin: 60px auto 60px;
 }
 
 header > div {

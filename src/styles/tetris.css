@@ -14,7 +14,7 @@ body {
 
 /*толщина холста — 1 пиксель, белый цвет*/
 canvas#game {
-    background-color: rgb(146,197,178);
+    background-color: #7dbca7;
 }
 
 .score__container {
@@ -39,7 +39,7 @@ canvas#game {
 }
 
 #emotion {
-    font-size: 45px;
+    font-size: 47px;
     width: 300px;
     margin-top: 160px;
 }
@@ -96,8 +96,8 @@ canvas#game {
     font-size: 25px;
 }
 .gameover h3 {
-    margin: 15px 0;
-    font-size: 16px;
+    margin: 14px 0;
+    font-size: 14px;
 }
 
 .gameover__actions {
@@ -108,12 +108,13 @@ canvas#game {
 
 .gameover__actions button{
     margin: 0;
-    padding: 5px 10px;
+    padding: 0;
     background: transparent;
     outline: none;
     border: none;
     font-size: 30px;
     color: white;
+    cursor: pointer;
 }
 
 .gameover.show {

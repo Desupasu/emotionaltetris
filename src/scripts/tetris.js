@@ -83,15 +83,16 @@ window.onload = () => {
     };
     // Функция изменения размера санваса при ресайзе окна
     function resizeCanvas() {
-      grid = Math.floor((window.innerHeight - 130) / configuration.TETRISHEIGHT);
-      canvas.height = tetrisHeight * grid;
-      canvas.width = grid * 10;
+      // grid = Math.floor((window.innerHeight - 130) / configuration.TETRISHEIGHT);
+      // canvas.height = tetrisHeight * grid;
+      // canvas.width = grid * 10;
 
-      nextCanvas.height = grid * 2;
-      nextCanvas.width = grid * 4;
+      // nextCanvas.height = grid * 2;
+      // nextCanvas.width = grid * 4;
 
       const section = document.querySelector('.gameover');
-      section.style.width = grid * 10 + 150 + 'px';
+      section.style.width = 569 + 'px';
+      // section.style.width = grid * 10 + 150 + 'px';
     }
     // Инициализирующий ресайз
     resizeCanvas();
@@ -164,8 +165,6 @@ window.onload = () => {
     };
     // Количество выпавших фигур для обновления эмоции
     const tetraminoForUpdate = configuration.COUNTTOCHANGE;
-    // Ошибка переполнения
-    let isError = false;
     // Количество выпавших фигур для смены эмоции
     let countOfTetramino = 0;
     // Количество строк для расчета уровня
@@ -294,15 +293,15 @@ window.onload = () => {
         const doc4 = document.getElementById('lines');
         doc4.innerHTML = 'Lines:<br />' + totalRows;
         // обновление бест скора
-        let scores = localStorage.getItem('scores');
-        if (scores) {
-          scores = JSON.parse(scores);
-        } else {
-          scores = {};
-        }
-        const bestscore = Object.keys(scores).reduce((acc, red) => red > Number(acc) ? red : Number(acc), 0);
-        const doc5 = document.getElementById('bestscore');
-        doc5.innerHTML = 'Best score:<br />' + Math.max(bestscore, score);
+        // let scores = localStorage.getItem('scores');
+        // if (scores) {
+        //   scores = JSON.parse(scores);
+        // } else {
+        //   scores = {};
+        // }
+        // const bestscore = Object.keys(scores).reduce((acc, red) => red > Number(acc) ? red : Number(acc), 0);
+        // const doc5 = document.getElementById('bestscore');
+        // doc5.innerHTML = 'Best score:<br />' + Math.max(bestscore, score);
     }
 
     updateText();
@@ -507,51 +506,18 @@ window.onload = () => {
           scores[score.toString()] = (new Date()).valueOf();
           localStorage.setItem('scores', JSON.stringify(scores));
         }
-        if (score && (!scores || Object.keys(scores).every(item => Number(item) < score))) {
-          // context.fillStyle = 'black';
-          // context.globalAlpha = 0.75;
-          // context.fillRect(0, canvas.height / 2 - 60, canvas.width, 120);
-          // // пишем надпись белым моноширинным шрифтом по центру
-          // context.globalAlpha = 1;
-          // context.fillStyle = 'white';
-          // context.font = '36px monospace';
-          // context.textAlign = 'center';
-          // context.textBaseline = 'middle';
-          // context.fillText('GAME OVER!', canvas.width / 2, (canvas.height / 2) + 25);
-          // context.fillText('BEST SCORE!', canvas.width / 2, (canvas.height / 2) - 25);
-          showPopup('bestgameover');
-        } else {
-          // рисуем чёрный прямоугольник посередине поля
-          // context.fillStyle = 'black';
-          // context.globalAlpha = 0.75;
-          // context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-          // // пишем надпись белым моноширинным шрифтом по центру
-          // context.globalAlpha = 1;
-          // context.fillStyle = 'white';
-          // context.font = '36px monospace';
-          // context.textAlign = 'center';
-          // context.textBaseline = 'middle';
-          // context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
-          showPopup('gameover');
-        }
+        showPopup('gameover');
+        // if (score && (!scores || Object.keys(scores).every(item => Number(item) < score))) {
+        //   showPopup('bestgameover');
+        // } else {
+        //   showPopup('gameover');
+        // }
       }
       // пауза
       function showPause() {
         // прекращаем всю анимацию игры
         pause = true;
         cancelAnimationFrame(rAF);
-        // ставим флаг окончания
-        // рисуем чёрный прямоугольник посередине поля
-        // context.fillStyle = 'black';
-        // context.globalAlpha = 0.75;
-        // context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-        // // пишем надпись белым моноширинным шрифтом по центру
-        // context.globalAlpha = 1;
-        // context.fillStyle = 'white';
-        // context.font = '36px monospace';
-        // context.textAlign = 'center';
-        // context.textBaseline = 'middle';
-        // context.fillText('PAUSE!', canvas.width / 2, canvas.height / 2);
       }
 
     function showError() {
@@ -566,7 +532,7 @@ window.onload = () => {
       body.appendChild(div);
       div.innerHTML = `<b>OOPS!</b><br />ERROR! GAMER DETECTED!<br />STOP PLAYING AND DO YOUR HOMEWORK!<br />(MAX SCORE REACHED)<br /><button id="error">OK</button>`;
       div.style.textAlign = 'center';
-      div.style.fontSize = '25px';
+      div.style.fontSize = '30px';
       div.onclick = exit;
     }
 

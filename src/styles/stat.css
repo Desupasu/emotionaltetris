@@ -6,13 +6,14 @@
     overflow: auto;
     margin-right: 70px;
     margin-left: 70px;
+    height: 220px;
 }
 
 #scores > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0;
+    margin: 15px 0;
     padding: 0 80px 0 40px;
     letter-spacing: 0.2em;
     position: relative;
@@ -23,8 +24,8 @@
     right: 0px;
     bottom: 4px;
     background: url('../icons/crown.png') center/cover no-repeat;
-    width: 60px;
-    height: 30px;
+    width: 66px;
+    height: 34px;
     z-index: 2;
 }
 
