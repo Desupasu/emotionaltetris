@@ -1,20 +1,15 @@
 @font-face {
-    font-family: Montserrat;
-    src: url("../fonts/Montserrat-Light.woff") format("woff");
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Light.woff2") format("woff2");
     font-weight: normal;
 }
 
 @font-face {
-    font-family: Montserrat;
-    src: url("../fonts/Montserrat-Bold.woff") format("woff");
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Bold.woff2") format("woff2");
     font-weight: bold;
 }
 
-@font-face {
-    font-family: Quicksand;
-    src: url("../fonts/Quicksand-VariableFont_wght.woff") format("woff");
-    font-weight: normal;
-}
 html {
     --bg: #eeece0;
     --bg-menu: #7dbca7;
@@ -24,7 +19,7 @@ html {
 body.menu {
     height: 100%;
     margin: 0;
-    font-family: Montserrat;
+    font-family: "Montserrat";
     overflow: hidden;
 }
 

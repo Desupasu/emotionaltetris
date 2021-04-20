@@ -5,16 +5,16 @@ html, body {
 }
 /*делаем чёрный фон и выравниваем всё по центру*/
 body {
-    background-color: rgb(233,234,225);
+    background-color: var(--bg);
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    font-family: Montserrat;
+    font-family: "Montserrat";
 }
 
 /*толщина холста — 1 пиксель, белый цвет*/
 canvas#game {
-    background-color: #7dbca7;
+    background-color: var(--bg-menu);
 }
 
 .score__container {
@@ -64,14 +64,14 @@ canvas#game {
     padding: 30px;
     width: 30px;
     cursor: pointer;
-    background: url('../icons/home.svg') center/cover no-repeat;
+    background: url('../icons/home.png') center/cover no-repeat;
     border: none;
     outline: none;
     cursor: pointer;
 }
 
 #actions > button:first-child {
-    background: url('../icons/reload.svg') center/cover no-repeat;
+    background: url('../icons/restart.png') center/cover no-repeat;
     margin-right: 25px;
 }
 
@@ -84,6 +84,7 @@ canvas#game {
     display: none;
     color: white;
     padding: 10px 0;
+    font-family: "Montserrat";
 }
 
 .gameover h2, .gameover h3 {
@@ -115,6 +116,7 @@ canvas#game {
     font-size: 30px;
     color: white;
     cursor: pointer;
+    font-family: "Montserrat";
 }
 
 .gameover.show {
