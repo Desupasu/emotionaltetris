@@ -78,7 +78,7 @@ header {
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(4, 1fr);
     gap: 4px 2px;
-    margin: 60px auto 60px;
+    margin: 30px auto 60px;
 }
 
 header > div {

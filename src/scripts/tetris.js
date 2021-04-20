@@ -83,9 +83,9 @@ window.onload = () => {
     };
     // Функция изменения размера санваса при ресайзе окна
     function resizeCanvas() {
-      // grid = Math.floor((window.innerHeight - 130) / configuration.TETRISHEIGHT);
-      // canvas.height = tetrisHeight * grid;
-      // canvas.width = grid * 10;
+     // grid = Math.floor((window.innerHeight - 130) / configuration.TETRISHEIGHT);
+      canvas.height = tetrisHeight * grid;
+      canvas.width = grid * 10;
 
       // nextCanvas.height = grid * 2;
       // nextCanvas.width = grid * 4;

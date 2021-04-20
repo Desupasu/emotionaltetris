@@ -4,11 +4,11 @@ const path = require('path');
 function createWindow () {
   let win = new BrowserWindow({
     width: 1000,
-    height: 800,
-    minHeight: 800,
+    height: 707,
+    minHeight: 707,
     minWidth: 1000,
     maxWidth: 1000,
-    maxHeight: 800,
+    maxHeight: 707,
     webPreferences: {
         preload: path.join(__dirname, 'src/minscripts/preload.min.js'),
         enableRemoteModule: true,
