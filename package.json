@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "build": {
-    "appId": "emotionaltetris"
+    "appId": "emotionaltetris",
+    "win": {
+      "icon": "./src/icons/icon.ico"
+    }
   },
   "devDependencies": {
     "electron": "^12.0.0",
