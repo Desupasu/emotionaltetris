@@ -25,6 +25,6 @@
     "min": "node minify.js || bash minify.bash"
   },
   "keywords": [],
-  "author": "romatel <zaxarovroma228@gmail.com>",
+  "author": "romatel <zaxarovroma228@gmail.com>, Тимофей Карклин <timkar164@gmail.com>",
   "license": "MIT"
 }
